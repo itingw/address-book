@@ -131,7 +131,7 @@ $(function() {
       $('body').append(list);
       $('body').append(detail);
 
-      document.getElementById("name").textContent = "Welcome to the directory. Please click on a name on the left to learn more about the user!";
+      document.getElementById("name").textContent = "Welcome to the directory. Please click on a name in the list to learn more about the user!";
 
       this.renderList();
     },
@@ -232,10 +232,10 @@ $(function() {
       this.hideElementbyId("editButton");
       this.hideElementbyId("deleteButton");
 
-      this.showElementbyId("edit", "initial");
+      this.showElementbyId("edit", "block");
       this.showEditForm(null);
       this.fillAllTextInput(null);
-      // console.log(controller.getCurrentUser());
+      console.log(controller.getCurrentUser());
     },
 
     //create the edit button
@@ -254,6 +254,7 @@ $(function() {
         }
       }
       else {
+        this.showElementbyId("edit", "block");
         this.showElementbyId("editButton", "block");
       }
     },
@@ -290,6 +291,7 @@ $(function() {
           display.hideElementbyId("submit");
           display.hideElementbyId("cancel");
           display.showEditButton();
+          display.fillAllTextInput(controller.getCurrentUser());
           display.render();
           return false;
           }
@@ -314,9 +316,9 @@ $(function() {
       }
       else {
         this.showElementbyId("form", "inline-block");
-        this.fillAllTextInput(user);
-        this.showElementbyId("cancel", "initial");
-        this.showElementbyId("submit", "initial");
+        this.fillAllTextInput(controller.getCurrentUser());
+        this.showElementbyId("cancel", "block");
+        this.showElementbyId("submit", "block");
       }
 
     },
@@ -402,12 +404,10 @@ $(function() {
 
       //change title to show that the user is deleted
       document.getElementById("name").innerHTML =  "User Deleted!";
-
       this.hideElementbyId("image");
       this.hideElementbyId("info");
       this.hideElementbyId("edit");
       this.hideElementbyId("delete");
-
     }
 
   }

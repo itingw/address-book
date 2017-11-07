@@ -1,0 +1,80 @@
+body {
+  max-width: 800px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+form {
+  margin: 10px;
+}
+
+label {
+  display: list-item;
+  margin-top: 10px;
+  list-style-type: none;
+}
+
+button {
+  display: flex;
+  background-color: #727272;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  font-size: 12px;
+  width: 100%;
+}
+
+img {
+  height: 100px;
+}
+
+h1{
+  max-width: 500px;
+}
+
+.list-button {
+  display: list-item;
+  background-color: #323232;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  font-size: 16px;
+  width: 100%;
+}
+
+.list-button:nth-child(odd)
+{
+    background-color: #424242;
+}
+
+.list-button:hover, .list-button:active{
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+}
+
+
+#deleteButton, #editButton, #cancel, #submit {
+  max-width: 125px;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+#list {
+  float: left;
+  width: 20%;
+  height: 100vh;
+  background-color: #757575;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+#detail {
+  display: inline-block;
+  max-width: 600px;
+  margin-left: 40px;
+  margin-top: 10px;
+}
