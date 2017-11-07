@@ -1,0 +1,46 @@
+body {
+  max-width: 800px;
+}
+form {
+  margin: 10px;
+}
+
+label {
+  display: list-item;
+  margin-top: 10px;
+  list-style-type: none;
+}
+
+button {
+  margin: 10px;
+}
+
+img {
+  height: 100px;
+}
+
+h1{
+  max-width: 500px;
+}
+
+.list-button {
+  display: list-item;
+}
+
+#adminButton {
+  margin: 10px;
+  list-style-type: none;
+}
+
+#list {
+  float: left;
+  width: 20%;
+  height: 100vh;
+  overflow: scroll;
+}
+
+#detail {
+  display: inline-block;
+  max-width: 600px;
+  margin: 40px;
+}
