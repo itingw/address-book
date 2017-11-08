@@ -148,17 +148,19 @@ $(function() {
       var allUsers = controller.getUserInfo();
       for (var i = 0; i < allUsers.length; i++)
       {
-          var UserID = allUsers[i].idNo;
-          var button = document.createElement("button");
-          button.id = UserID;
-          button.className = "list-button";
-          button.append(allUsers[i].name);
-          document.getElementById("list").appendChild(button);
-          //when button is clicked
-          button.onclick = function() {
-            controller.setCurrentUser(this.id);
-            display.render();
+          if(allUsers[i] !== undefined) {
+            var button = document.createElement("button");
+            button.id = allUsers[i].idNo;
+            button.className = "list-button";
+            button.append(allUsers[i].name);
+            document.getElementById("list").appendChild(button);
+            //when button is clicked
+            button.onclick = function() {
+              controller.setCurrentUser(this.id);
+              display.render();
+            }
           }
+
       }
       this.showAddUser();
 
@@ -409,7 +411,6 @@ $(function() {
     hideDeletedUser: function(userID) {
       //remove the button from the list
       document.getElementById(userID).remove();
-
       //change title to show that the user is deleted
       document.getElementById("name").innerHTML =  "User Deleted!";
       this.hideElementbyId("image");
