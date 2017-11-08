@@ -157,8 +157,6 @@ $(function() {
           //when button is clicked
           button.onclick = function() {
             controller.setCurrentUser(this.id);
-            console.log("list click:  ")
-            console.log(controller.getCurrentUser());
             display.render();
           }
       }
@@ -267,9 +265,6 @@ $(function() {
     showEditForm: function(user) {
       this.hideElementbyId("info");
       this.hideElementbyId("editButton");
-      console.log("show edit: ");
-      console.log(user);
-
       if(document.getElementById("form") == null) {
         //create DOM elements for edit form
         var editForm = document.createElement("form");
@@ -307,10 +302,8 @@ $(function() {
         submitButton.type = "button";
         submitButton.append("Submit");
         editForm.appendChild(submitButton);
-        submitButton.onclick = function(user) {
-          console.log("submit: ");
-          console.log(user)
-          if(user.name!= null) {
+        submitButton.onclick = function() {
+          if(controller.getCurrentUser() != null) {
             controller.updateInfo();
           }
           else {
@@ -361,7 +354,6 @@ $(function() {
     // fill all the text inputs in the form
     fillAllTextInput: function(info) {
       if(info!= null) {
-        // console.log(info.name);
         //set default imputs as the current User's info
         this.fillTextInput("inputName", info.name);
         this.fillTextInput("inputUrl", info.url);
