@@ -157,6 +157,8 @@ $(function() {
           //when button is clicked
           button.onclick = function() {
             controller.setCurrentUser(this.id);
+            console.log("list click:  ")
+            console.log(controller.getCurrentUser());
             display.render();
           }
       }
@@ -173,20 +175,23 @@ $(function() {
       this.showElementbyId("info", "block");
 
       //change names of DOM elements
-      document.getElementById("name").textContent = controller.getCurrentUser().name;
-      document.getElementById("email").textContent = "email: " + controller.getCurrentUser().email;
-      document.getElementById("phone").textContent = "phone: " + controller.getCurrentUser().phone;
-      document.getElementById("role").textContent = "role: " + controller.getCurrentUser().role;
-      document.getElementById("lastLogin").textContent = "last login: " + controller.getCurrentUser().lastLogin;
-      document.getElementById("actions").textContent = "actions: " + controller.getCurrentUser().actions
-      document.getElementById("image").src = controller.getCurrentUser().url;
+      if(controller.getCurrentUser() !== undefined) {
+        document.getElementById("name").textContent = controller.getCurrentUser().name;
+        document.getElementById("email").textContent = "email: " + controller.getCurrentUser().email;
+        document.getElementById("phone").textContent = "phone: " + controller.getCurrentUser().phone;
+        document.getElementById("role").textContent = "role: " + controller.getCurrentUser().role;
+        document.getElementById("lastLogin").textContent = "last login: " + controller.getCurrentUser().lastLogin;
+        document.getElementById("actions").textContent = "actions: " + controller.getCurrentUser().actions
+        document.getElementById("image").src = controller.getCurrentUser().url;
 
-      this.showEditButton();
-      this.showDeleteButton();
+        this.showEditButton();
+        this.showDeleteButton();
+      }
 
       this.hideElementbyId("form");
       this.hideElementbyId("cancel");
       this.hideElementbyId("submit");
+
     },
 
     //hides specified element by Id
@@ -218,6 +223,7 @@ $(function() {
       document.getElementById("list").appendChild(addUser);
 
       addUser.onclick = function() {
+        controller.setCurrentUser(null);
         display.addUserform();
       }
 
@@ -231,11 +237,9 @@ $(function() {
       this.hideElementbyId("form");
       this.hideElementbyId("editButton");
       this.hideElementbyId("deleteButton");
-
       this.showElementbyId("edit", "block");
       this.showEditForm(null);
       this.fillAllTextInput(null);
-      console.log(controller.getCurrentUser());
     },
 
     //create the edit button
@@ -263,6 +267,8 @@ $(function() {
     showEditForm: function(user) {
       this.hideElementbyId("info");
       this.hideElementbyId("editButton");
+      console.log("show edit: ");
+      console.log(user);
 
       if(document.getElementById("form") == null) {
         //create DOM elements for edit form
@@ -284,14 +290,13 @@ $(function() {
         //create cancel button that removes the form when clicked
         var cancelButton = document.createElement("button");
         cancelButton.id = "cancel";
+        cancelButton.type = "button";
         cancelButton.append("Cancel");
         editForm.appendChild(cancelButton);
         cancelButton.onclick = function() {
           display.hideElementbyId("form");
           display.hideElementbyId("submit");
           display.hideElementbyId("cancel");
-          display.showEditButton();
-          display.fillAllTextInput(controller.getCurrentUser());
           display.render();
           return false;
           }
@@ -299,14 +304,23 @@ $(function() {
         //create submit button that updates the info of the current User
         var submitButton = document.createElement("button");
         submitButton.id = "submit";
+        submitButton.type = "button";
         submitButton.append("Submit");
         editForm.appendChild(submitButton);
-        submitButton.onclick = function() {
-          if(user!= null) {
+        submitButton.onclick = function(user) {
+          console.log("submit: ");
+          console.log(user)
+          if(user.name!= null) {
             controller.updateInfo();
           }
           else {
-            controller.addUser();
+            if($("#inputName").val() !== "") {
+              controller.addUser();
+            }
+            else {
+              window.alert("Please include a name!");
+              return false;
+            }
           }
           display.render();
           display.renderList();
@@ -315,8 +329,8 @@ $(function() {
 
       }
       else {
-        this.showElementbyId("form", "inline-block");
         this.fillAllTextInput(controller.getCurrentUser());
+        this.showElementbyId("form", "inline-block");
         this.showElementbyId("cancel", "block");
         this.showElementbyId("submit", "block");
       }
@@ -340,12 +354,14 @@ $(function() {
 
     // fill the text input with content
     fillTextInput: function(id, text) {
-      document.getElementById(id).setAttribute('value', text);
+      document.getElementById(id).value = text;
+
     },
 
     // fill all the text inputs in the form
     fillAllTextInput: function(info) {
       if(info!= null) {
+        // console.log(info.name);
         //set default imputs as the current User's info
         this.fillTextInput("inputName", info.name);
         this.fillTextInput("inputUrl", info.url);
