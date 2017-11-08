@@ -21,7 +21,7 @@ $(function() {
 
     // add new user
     addUser: function() {
-
+      //new user has the next id no in the array
       var newUserID = userData.users.length;
 
       //grab inputs from fields
@@ -33,7 +33,9 @@ $(function() {
       var newLogin = $("#inputLogin").val();
       var newActions = $("#inputActions").val();
 
+      //add the new user to the array
       userData.users.push({ idNo: newUserID, name: newName, url: newUrl, email: newEmail, phone: newPhone, role: newRole, lastLogin: newLogin, actions: newActions })
+      //set the current user to the new user
       controller.setCurrentUser(newUserID);
 
       //update display and buttons
@@ -89,7 +91,7 @@ $(function() {
 
     init: function() {
 
-      //add DOM elements
+      //create DOM elements
       var list = document.createElement("div");
       list.id = "list";
       var detail = document.createElement("div");
@@ -128,10 +130,18 @@ $(function() {
       info.appendChild(lastLogin);
       info.appendChild(actions);
 
+      //append list and detail to body
       $('body').append(list);
       $('body').append(detail);
 
-      document.getElementById("name").textContent = "Welcome to the directory. Please click on a name in the list to learn more about the user!";
+      //media query changes welcome message
+      const mq = window.matchMedia( "(min-width: 450px)" );
+      if(mq.matches) {
+        document.getElementById("name").textContent = "Welcome to the directory. Please click on a name in the list to learn more about the user!";
+      }
+      else {
+        document.getElementById("name").textContent = "Welcome to the directory. Please open the menu and click on a name in the list to learn more about the user!";
+      }
 
       this.renderList();
     },
@@ -148,13 +158,13 @@ $(function() {
       var allUsers = controller.getUserInfo();
       for (var i = 0; i < allUsers.length; i++)
       {
+          //create buttons, make sure to skip through users that have been deleted
           if(allUsers[i] !== undefined) {
             var button = document.createElement("button");
             button.id = allUsers[i].idNo;
             button.className = "list-button";
             button.append(allUsers[i].name);
             document.getElementById("list").appendChild(button);
-            //when button is clicked
             button.onclick = function() {
               controller.setCurrentUser(this.id);
               display.render();
@@ -162,6 +172,8 @@ $(function() {
           }
 
       }
+
+      //add the add user button to the end of the list
       this.showAddUser();
 
     },
@@ -169,6 +181,7 @@ $(function() {
     //render the details
     render: function() {
 
+      //make sure the detail pane is showing
       this.showElementbyId("detail", "inline-block");
       this.showElementbyId("name", "block");
       this.showElementbyId("image", "block");
@@ -184,10 +197,12 @@ $(function() {
         document.getElementById("actions").textContent = "actions: " + controller.getCurrentUser().actions
         document.getElementById("image").src = controller.getCurrentUser().url;
 
+        //show the edit and delete button
         this.showEditButton();
         this.showDeleteButton();
       }
 
+      //make sure the form, cancel and submit buttons are hidden
       this.hideElementbyId("form");
       this.hideElementbyId("cancel");
       this.hideElementbyId("submit");
@@ -229,12 +244,11 @@ $(function() {
 
     },
 
-    //create the add user function
+    //create the add user function, hiding all unnecessary dom elements
     addUserform: function() {
       this.hideElementbyId("name");
       this.hideElementbyId("image");
       this.hideElementbyId("info");
-      this.hideElementbyId("form");
       this.hideElementbyId("editButton");
       this.hideElementbyId("deleteButton");
       this.showElementbyId("edit", "block");
@@ -245,8 +259,8 @@ $(function() {
     //create the edit button
     showEditButton: function() {
 
+      //if the edit button hasn't been added to the DOM yet, create it. otherwise, just show it
       if(document.getElementById("editButton") == null) {
-        //create DOM elements
         var editButton = document.createElement("button");
         editButton.append("Edit User");
         editButton.id = "editButton"
@@ -267,8 +281,9 @@ $(function() {
     showEditForm: function(user) {
       this.hideElementbyId("info");
       this.hideElementbyId("editButton");
+
+      //if the form doesn't exist yet in the DOM, create it
       if(document.getElementById("form") == null) {
-        //create DOM elements for edit form
         var editForm = document.createElement("form");
         editForm.id = "form";
         document.getElementById("edit").append(editForm);
@@ -282,6 +297,7 @@ $(function() {
         this.createTextInput("last login: ", "inputLogin");
         this.createTextInput("actions: ", "inputActions");
 
+        //fill the inputs with the current user
         this.fillAllTextInput(user);
 
         //create cancel button that removes the form when clicked
@@ -299,6 +315,7 @@ $(function() {
           }
 
         //create submit button that updates the info of the current User
+        //or adds a new user for the new user form
         var submitButton = document.createElement("button");
         submitButton.id = "submit";
         submitButton.type = "button";
@@ -356,7 +373,7 @@ $(function() {
     // fill all the text inputs in the form
     fillAllTextInput: function(info) {
       if(info!= null) {
-        //set default imputs as the current User's info
+        //set default imputs as the current User's info if the user exists
         this.fillTextInput("inputName", info.name);
         this.fillTextInput("inputUrl", info.url);
         this.fillTextInput("inputEmail", info.email);
@@ -376,14 +393,14 @@ $(function() {
       }
     },
 
-    //updates name of the User on the buttons
+    //updates name of the user on a new button
     updateButton: function(newUserID, newName) {
       document.getElementById(newUserID).textContent = newName;
     },
 
     //create the delete button
     showDeleteButton: function() {
-      //create DOM elements
+      //create DOM elements if the delete button doesn't exist yets
       if(document.getElementById("delete") == null) {
         var deleteDiv = document.createElement("div");
         deleteDiv.id = "delete";
@@ -392,7 +409,7 @@ $(function() {
         deleteButton.id = "deleteButton"
         deleteDiv.append(deleteButton);
 
-        //when clicked, user will be deleted
+        //when clicked, the user will be deleted
         deleteButton.onclick = function() {
           var currentUserID = controller.getCurrentUser().idNo;
           controller.deleteUser(currentUserID);
